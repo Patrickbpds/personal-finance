@@ -45,6 +45,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Title> titles;
 
+    @OneToMany(mappedBy = "user")
+    private List<CenterCost> centerCosts;
+
     //#region Framework Security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,22 +66,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return inactivationDate == null;
     }
     //#endregion
 }
