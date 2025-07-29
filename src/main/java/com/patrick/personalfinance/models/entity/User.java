@@ -1,16 +1,18 @@
-package com.patrick.personalfinance.entity;
+package com.patrick.personalfinance.models.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @With
 @Data
@@ -20,9 +22,9 @@ import java.util.List;
 @Table(name = "user", schema = "finance_tables")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idUser")
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -35,10 +37,10 @@ public class User implements UserDetails {
     @Column(columnDefinition = "TEXT")
     private String photo;
 
-    @Column(nullable = false)
-    private Date registrationDate;
+    @CreationTimestamp
+    private LocalDateTime registrationDate;
 
-    private Date InactivationDate;
+    private LocalDateTime inactivationDate;
 
     @OneToMany(mappedBy = "user")
     private List<Title> titles;
