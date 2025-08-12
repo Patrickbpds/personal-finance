@@ -1,21 +1,37 @@
 package com.patrick.personalfinance.service;
 
+import com.patrick.personalfinance.mapper.UserMapper;
 import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
 import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
+import com.patrick.personalfinance.models.entity.User;
+import com.patrick.personalfinance.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class UserService implements CrudService<UserRequestDto, UserResponseDto> {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<UserResponseDto> getAll() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+        return UserMapper.toResponseDtoList(users);
     }
 
     @Override
     public UserResponseDto getById(UUID id) {
-        return null;
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return UserMapper.toResponseDto(user.get());
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
     }
 
     @Override
