@@ -57,6 +57,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
 
     @Override
     public void delete(UUID id) {
-
+        getById(id);
+        userRepository.deleteById(id);
     }
 }
