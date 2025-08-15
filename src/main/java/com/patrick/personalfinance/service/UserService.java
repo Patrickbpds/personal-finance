@@ -4,6 +4,7 @@ import com.patrick.personalfinance.mapper.UserMapper;
 import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
 import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.models.entity.User;
+import com.patrick.personalfinance.models.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
         if (user.isPresent()) {
             return UserMapper.toResponseDto(user.get());
         } else {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new ResourceNotFoundException("User not found with id: " + id);
         }
     }
 
