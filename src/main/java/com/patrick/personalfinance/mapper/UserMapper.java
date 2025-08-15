@@ -22,7 +22,11 @@ public final class UserMapper {
                 user.getName(),
                 user.getEmail(),
                 user.getPhoto(),
-                user.getInactivationDate()
+                user.getRegistrationDate(),
+                user.getInactivationDate(),
+                user.getUpdatedAt(),
+                user.getCreatedBy(),
+                user.getUpdatedBy()
         );
     }
 

@@ -9,7 +9,11 @@ public record UserResponseDto (
         String name,
         String email,
         String photo,
-        LocalDateTime inactivationDate
+        LocalDateTime registrationDate,
+        LocalDateTime inactivationDate,
+        LocalDateTime updatedAt,
+        UUID createdBy,
+        UUID updatedBy
 
 ){
 

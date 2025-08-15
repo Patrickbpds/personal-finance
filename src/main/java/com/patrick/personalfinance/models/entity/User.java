@@ -42,6 +42,15 @@ public class User implements UserDetails {
 
     private LocalDateTime inactivationDate;
 
+    @Column(name = "created_by")
+    private UUID createdBy;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by")
+    private UUID updatedBy;
+
     @OneToMany(mappedBy = "user")
     private List<Title> titles;
 
