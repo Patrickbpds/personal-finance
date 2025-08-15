@@ -41,6 +41,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
         User user = UserMapper.toEntity(dto);
         // ENCODE PASSWORD
         user.setId(null); // Ensure the ID is null for creation
+        user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
@@ -63,6 +64,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found with id: " + id));
         user.setInactivationDate(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
     }
 }
