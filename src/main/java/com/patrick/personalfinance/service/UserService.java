@@ -39,6 +39,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
     public UserResponseDto create(UserRequestDto dto) {
         User user = UserMapper.toEntity(dto);
         // ENCODE PASSWORD
+        user.setId(null); // Ensure the ID is null for creation
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
