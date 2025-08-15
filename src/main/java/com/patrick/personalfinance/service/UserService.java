@@ -9,6 +9,7 @@ import com.patrick.personalfinance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,7 +58,10 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
 
     @Override
     public void delete(UUID id) {
-        getById(id);
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found with id: " + id));
+        user.setInactivationDate(LocalDateTime.now());
+        userRepository.save(user);
     }
 }
