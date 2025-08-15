@@ -52,6 +52,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
                         "User not found with id: " + id));
         UserMapper.updateEntityFromDto(dto, user);
         // ENCODE PASSWORD
+        user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
