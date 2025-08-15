@@ -37,7 +37,10 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
 
     @Override
     public UserResponseDto create(UserRequestDto dto) {
-        return null;
+        User user = UserMapper.toEntity(dto);
+        // ENCODE PASSWORD
+        user = userRepository.save(user);
+        return UserMapper.toResponseDto(user);
     }
 
     @Override
