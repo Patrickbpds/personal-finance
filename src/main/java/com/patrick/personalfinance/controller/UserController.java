@@ -1,5 +1,6 @@
 package com.patrick.personalfinance.controller;
 
+import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
 import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(userService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto dto) {
+        UserResponseDto user = userService.create(dto);
+        return ResponseEntity.status(201).body(user);
     }
 
 
