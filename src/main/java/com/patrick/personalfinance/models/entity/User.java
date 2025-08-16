@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -38,18 +39,15 @@ public class User implements UserDetails {
     private String photo;
 
     @CreationTimestamp
+    @Column(name = "registration_date", updatable = false)
     private LocalDateTime registrationDate;
 
+    @Column(name = "inactivation_date")
     private LocalDateTime inactivationDate;
 
-    @Column(name = "created_by")
-    private UUID createdBy;
-
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Column(name = "updated_by")
-    private UUID updatedBy;
 
     @OneToMany(mappedBy = "user")
     private List<Title> titles;
@@ -93,4 +91,13 @@ public class User implements UserDetails {
         return inactivationDate == null;
     }
     //#endregion
+
+    // Methods helper
+    public void inactivate() {
+        this.inactivationDate = LocalDateTime.now();
+    }
+
+    public boolean isActive() {
+        return this.inactivationDate == null;
+    }
 }
