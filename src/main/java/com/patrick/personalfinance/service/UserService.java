@@ -9,7 +9,6 @@ import com.patrick.personalfinance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +40,6 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
         User user = UserMapper.toEntity(dto);
         // ENCODE PASSWORD
         user.setId(null); // Ensure the ID is null for creation
-        user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
@@ -53,7 +51,6 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
                         "User not found with id: " + id));
         UserMapper.updateEntityFromDto(dto, user);
         // ENCODE PASSWORD
-        user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
@@ -63,8 +60,9 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found with id: " + id));
-        user.setInactivationDate(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+        // Soft delete
+        user.inactivate();
+
         userRepository.save(user);
     }
 }
