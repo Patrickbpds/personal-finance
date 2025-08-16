@@ -4,6 +4,7 @@ import com.patrick.personalfinance.mapper.UserMapper;
 import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
 import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.models.entity.User;
+import com.patrick.personalfinance.models.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.models.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
 
     @Override
     public UserResponseDto create(UserRequestDto dto) {
+        Optional<User> optionalUser = userRepository.findByEmail(dto.email());
+        if (optionalUser.isPresent()) {
+            throw new ResourceBadRequestException(
+                    "User with email " + dto.email() + " already exists.");
+        }
         User user = UserMapper.toEntity(dto);
         // ENCODE PASSWORD
         user.setId(null); // Ensure the ID is null for creation
