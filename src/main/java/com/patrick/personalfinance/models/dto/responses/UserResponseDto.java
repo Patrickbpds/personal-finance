@@ -11,10 +11,7 @@ public record UserResponseDto (
         String photo,
         LocalDateTime registrationDate,
         LocalDateTime inactivationDate,
-        LocalDateTime updatedAt,
-        UUID createdBy,
-        UUID updatedBy
-
+        LocalDateTime updatedAt
 ){
 
 }

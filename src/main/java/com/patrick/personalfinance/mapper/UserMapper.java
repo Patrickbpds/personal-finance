@@ -24,9 +24,7 @@ public final class UserMapper {
                 user.getPhoto(),
                 user.getRegistrationDate(),
                 user.getInactivationDate(),
-                user.getUpdatedAt(),
-                user.getCreatedBy(),
-                user.getUpdatedBy()
+                user.getUpdatedAt()
         );
     }
 
