@@ -2,9 +2,12 @@ package com.patrick.personalfinance.models.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public final class ErrorResponse {
 
     private String DataTime;
