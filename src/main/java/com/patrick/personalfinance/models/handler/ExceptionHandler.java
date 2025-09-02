@@ -3,8 +3,10 @@ package com.patrick.personalfinance.models.handler;
 import com.patrick.personalfinance.models.entity.ErrorResponse;
 import com.patrick.personalfinance.models.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.models.exceptions.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -52,5 +54,31 @@ public class ExceptionHandler {
                 ex.getMessage()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String dateTime = LocalDateTime.now().toString();
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                dateTime,
+                String.valueOf(HttpStatus.CONFLICT.value()),
+                "Conflict",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handlerBadCredentialsException(BadCredentialsException ex) {
+        String dateTime = LocalDateTime.now().toString();
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                dateTime,
+                String.valueOf(HttpStatus.UNAUTHORIZED.value()),
+                "Unauthorized",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }
