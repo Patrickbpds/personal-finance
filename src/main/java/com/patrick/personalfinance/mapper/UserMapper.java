@@ -3,6 +3,8 @@ package com.patrick.personalfinance.mapper;
 import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
 import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.models.entity.User;
+import com.patrick.personalfinance.security.request.CreateUserRequest;
+import com.patrick.personalfinance.security.request.UpdateUserRequest;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,17 +31,10 @@ public final class UserMapper {
     }
 
     public static User toEntity(UserRequestDto dto) {
-        if (dto == null){
-            return null;
-        }
-
-
-        User user = new User();
-        user.setName(dto.name());
-        user.setEmail(dto.email());
-        user.setPassword(dto.password());
-        user.setPhoto(dto.photo());
-        return user;
+        return mapBasicFields(dto == null ? null : dto.name(),
+                dto == null ? null : dto.email(),
+                dto == null ? null : dto.password(),
+                dto == null ? null : dto.photo());
     }
 
     public static void updateEntityFromDto(UserRequestDto dto, User user) {
@@ -62,5 +57,36 @@ public final class UserMapper {
                 .filter(Objects::nonNull)
                 .map(UserMapper::toResponseDto)
                 .toList();
+    }
+
+    public static User fromCreateRequest(CreateUserRequest dto) {
+        return mapBasicFields(dto == null ? null : dto.name(),
+                dto == null ? null : dto.email(),
+                dto == null ? null : dto.password(),
+                dto == null ? null : dto.photo());
+    }
+
+    public static void updateEntityFromUpdateRequest(UpdateUserRequest dto, User user) {
+        if (dto == null || user == null) {
+            return;
+        }
+
+        Optional.ofNullable(dto.name()).ifPresent(user::setName);
+        Optional.ofNullable(dto.email()).ifPresent(user::setEmail);
+        Optional.ofNullable(dto.photo()).ifPresent(user::setPhoto);
+        // Senha será tratada no serviço
+    }
+
+    private static User mapBasicFields(String name, String email, String password, String photo) {
+        if (name == null && email == null && password == null && photo == null) {
+            return null;
+        }
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setPhoto(photo);
+        return user;
     }
 }
