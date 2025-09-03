@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.security.request;
+package com.patrick.personalfinance.security.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

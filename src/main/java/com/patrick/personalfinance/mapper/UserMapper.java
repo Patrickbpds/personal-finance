@@ -3,8 +3,8 @@ package com.patrick.personalfinance.mapper;
 import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
 import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.models.entity.User;
-import com.patrick.personalfinance.security.request.CreateUserRequest;
-import com.patrick.personalfinance.security.request.UpdateUserRequest;
+import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
+import com.patrick.personalfinance.security.dto.request.UpdateUserRequest;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.security.response;
+package com.patrick.personalfinance.security.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
