@@ -1,7 +1,7 @@
-package com.patrick.personalfinance.controller;
+package com.patrick.personalfinance.presentation.controller;
 
-import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
-import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
+import com.patrick.personalfinance.application.dto.requests.UserRequestDto;
+import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

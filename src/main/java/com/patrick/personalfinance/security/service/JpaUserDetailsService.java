@@ -1,7 +1,7 @@
 package com.patrick.personalfinance.security.service;
 
-import com.patrick.personalfinance.models.entity.User;
-import com.patrick.personalfinance.repository.UserRepository;
+import com.patrick.personalfinance.domain.entity.User;
+import com.patrick.personalfinance.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

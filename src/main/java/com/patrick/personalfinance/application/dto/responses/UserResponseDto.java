@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.models.dto.responses;
+package com.patrick.personalfinance.application.dto.responses;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

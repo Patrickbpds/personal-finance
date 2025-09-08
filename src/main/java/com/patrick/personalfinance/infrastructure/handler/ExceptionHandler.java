@@ -1,8 +1,8 @@
-package com.patrick.personalfinance.models.handler;
+package com.patrick.personalfinance.infrastructure.handler;
 
-import com.patrick.personalfinance.models.entity.ErrorResponse;
-import com.patrick.personalfinance.models.exceptions.ResourceBadRequestException;
-import com.patrick.personalfinance.models.exceptions.ResourceNotFoundException;
+import com.patrick.personalfinance.domain.entity.ErrorResponse;
+import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
+import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.security.encoder;
+package com.patrick.personalfinance.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.models.exceptions;
+package com.patrick.personalfinance.domain.exceptions;
 
 public class ResourceBadRequestException extends RuntimeException {
 

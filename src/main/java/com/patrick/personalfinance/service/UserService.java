@@ -1,12 +1,12 @@
 package com.patrick.personalfinance.service;
 
-import com.patrick.personalfinance.mapper.UserMapper;
-import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
-import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
-import com.patrick.personalfinance.models.entity.User;
-import com.patrick.personalfinance.models.exceptions.ResourceBadRequestException;
-import com.patrick.personalfinance.models.exceptions.ResourceNotFoundException;
-import com.patrick.personalfinance.repository.UserRepository;
+import com.patrick.personalfinance.application.mapper.UserMapper;
+import com.patrick.personalfinance.application.dto.requests.UserRequestDto;
+import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
+import com.patrick.personalfinance.domain.entity.User;
+import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
+import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
+import com.patrick.personalfinance.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.config;
+package com.patrick.personalfinance.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.patrick.personalfinance.security.filter.JwtAuthenticationFilter;

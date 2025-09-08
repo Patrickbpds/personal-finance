@@ -1,8 +1,8 @@
 package com.patrick.personalfinance.security.service;
 
-import com.patrick.personalfinance.mapper.UserMapper;
-import com.patrick.personalfinance.models.entity.User;
-import com.patrick.personalfinance.repository.UserRepository;
+import com.patrick.personalfinance.application.mapper.UserMapper;
+import com.patrick.personalfinance.domain.entity.User;
+import com.patrick.personalfinance.domain.repository.UserRepository;
 import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 import com.patrick.personalfinance.security.dto.request.LoginRequest;
 import com.patrick.personalfinance.security.dto.request.UpdateUserRequest;

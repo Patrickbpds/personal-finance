@@ -1,8 +1,8 @@
-package com.patrick.personalfinance.mapper;
+package com.patrick.personalfinance.application.mapper;
 
-import com.patrick.personalfinance.models.dto.requests.UserRequestDto;
-import com.patrick.personalfinance.models.dto.responses.UserResponseDto;
-import com.patrick.personalfinance.models.entity.User;
+import com.patrick.personalfinance.application.dto.requests.UserRequestDto;
+import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
+import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 import com.patrick.personalfinance.security.dto.request.UpdateUserRequest;
 

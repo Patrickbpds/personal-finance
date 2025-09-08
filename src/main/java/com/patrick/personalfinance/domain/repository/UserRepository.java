@@ -1,6 +1,6 @@
-package com.patrick.personalfinance.repository;
+package com.patrick.personalfinance.domain.repository;
 
-import com.patrick.personalfinance.models.entity.User;
+import com.patrick.personalfinance.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

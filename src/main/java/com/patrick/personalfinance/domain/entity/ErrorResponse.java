@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.models.entity;
+package com.patrick.personalfinance.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
