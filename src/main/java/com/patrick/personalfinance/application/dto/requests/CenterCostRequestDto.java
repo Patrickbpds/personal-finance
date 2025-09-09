@@ -3,8 +3,6 @@ package com.patrick.personalfinance.application.dto.requests;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.UUID;
-
 public record CenterCostRequestDto(
 
         @NotBlank(message = "Description cannot be empty")
