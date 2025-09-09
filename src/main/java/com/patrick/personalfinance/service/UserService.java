@@ -10,11 +10,13 @@ import com.patrick.personalfinance.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional
 @Service
 public class UserService implements CrudService<UserRequestDto, UserResponseDto> {
 
@@ -25,12 +27,14 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getAll() {
         List<User> users = userRepository.findAll();
         return UserMapper.toResponseDtoList(users);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponseDto getById(UUID id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
