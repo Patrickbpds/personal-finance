@@ -20,36 +20,42 @@ import java.util.UUID;
 public class Title {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idTitle")
+    @Column(name = "idtitle")
     private UUID id;
 
     @Column(nullable = false)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "idUser")
+    @JoinColumn(name = "iduser")
     private User user;
 
-    @Enumerated
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "type")
     private TypeTitle type;
 
     @ManyToMany
     @JoinTable(
             name = "title_center_costs",
-            joinColumns = @JoinColumn(name = "idTitle"),
-            inverseJoinColumns = @JoinColumn(name = "idCenterCost")
+            schema = "finance_tables",
+            joinColumns = @JoinColumn(name = "idtitle"),
+            inverseJoinColumns = @JoinColumn(name = "idcentercost")
     )
     private List<CenterCost> centerCosts;
 
     @Column(nullable = false)
     private Double value;
 
+    @Column(name = "registrationdate")
     private LocalDateTime registrationDate;
 
+    @Column(name = "referencedate")
     private LocalDateTime referenceDate;
 
+    @Column(name = "expirationdate")
     private LocalDateTime expirationDate;
 
+    @Column(name = "paymentdate")
     private LocalDateTime paymentDate;
 
     @Column(columnDefinition = "TEXT")
