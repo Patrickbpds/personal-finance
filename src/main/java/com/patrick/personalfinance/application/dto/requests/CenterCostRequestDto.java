@@ -7,8 +7,6 @@ import java.util.UUID;
 
 public record CenterCostRequestDto(
 
-        UUID id,
-
         @NotBlank(message = "Description cannot be empty")
         @Size(min = 3, max = 100, message = "Description must be between 3 and 100 characters")
         String description,

@@ -28,7 +28,6 @@ public final class CenterCostMapper {
         }
 
         CenterCost centerCost = new CenterCost();
-        centerCost.setId(dto.id());
         centerCost.setDescription(dto.description());
         centerCost.setObservation(dto.observation());
         return centerCost;
