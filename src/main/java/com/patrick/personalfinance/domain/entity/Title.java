@@ -1,6 +1,6 @@
 package com.patrick.personalfinance.domain.entity;
 
-import com.patrick.personalfinance.domain.Enum.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TypeTitle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

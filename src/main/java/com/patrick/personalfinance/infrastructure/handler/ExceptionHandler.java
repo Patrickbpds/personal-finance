@@ -1,6 +1,6 @@
 package com.patrick.personalfinance.infrastructure.handler;
 
-import com.patrick.personalfinance.domain.entity.ErrorResponse;
+import com.patrick.personalfinance.infrastructure.dto.ErrorResponse;
 import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;

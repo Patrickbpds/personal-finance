@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.domain.Enum;
+package com.patrick.personalfinance.domain.enums;
 
 import lombok.Getter;
 

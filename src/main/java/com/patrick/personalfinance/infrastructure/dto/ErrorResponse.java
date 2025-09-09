@@ -1,9 +1,8 @@
-package com.patrick.personalfinance.domain.entity;
+package com.patrick.personalfinance.infrastructure.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @AllArgsConstructor
