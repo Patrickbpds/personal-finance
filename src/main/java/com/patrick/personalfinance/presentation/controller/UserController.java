@@ -5,6 +5,7 @@ import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +36,14 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Create new user")
-    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserRequestDto dto) {
         UserResponseDto user = userService.create(dto);
         return ResponseEntity.status(201).body(user);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update user")
-    public ResponseEntity<UserResponseDto> update(@PathVariable UUID id ,@RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> update(@PathVariable UUID id ,@Valid @RequestBody UserRequestDto dto) {
         UserResponseDto user = userService.update(id, dto);
         return ResponseEntity.ok(user);
     }
