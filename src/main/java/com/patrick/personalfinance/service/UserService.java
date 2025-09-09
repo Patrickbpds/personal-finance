@@ -8,6 +8,7 @@ import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<UserResponseDto> getAll() {
@@ -44,8 +48,9 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
                     "User with email " + dto.email() + " already exists.");
         }
         User user = UserMapper.toEntity(dto);
-        // ENCODE PASSWORD
         user.setId(null); // Ensure the ID is null for creation
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
@@ -55,8 +60,19 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found with id: " + id));
+
+        Optional<User> optionalUser = userRepository.findByEmail(dto.email());
+            if (optionalUser.isPresent() && !optionalUser.get().getId().equals(id)) {
+                throw new ResourceBadRequestException(
+                        "User with email " + dto.email() + " already exists.");
+            };
+
         UserMapper.updateEntityFromDto(dto, user);
-        // ENCODE PASSWORD
+
+        if (dto.password() != null && !dto.password().trim().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(dto.password()));
+        }
+
         user = userRepository.save(user);
         return UserMapper.toResponseDto(user);
     }
