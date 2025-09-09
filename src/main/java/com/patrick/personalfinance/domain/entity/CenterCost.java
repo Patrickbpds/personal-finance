@@ -20,7 +20,7 @@ public class CenterCost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idCenterCost")
+    @Column(name = "idcentercost")
     private UUID id;
 
     @Column(nullable = false)
@@ -30,7 +30,7 @@ public class CenterCost {
     private String observation;
 
     @ManyToOne
-    @JoinColumn(name = "idUser")
+    @JoinColumn(name = "iduser")
     private User user;
 
     @ManyToMany(mappedBy = "centerCosts")
