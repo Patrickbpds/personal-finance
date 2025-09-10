@@ -6,21 +6,21 @@ import com.patrick.personalfinance.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "User Management", description = "User management APIs")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     @Operation(summary = "Get all users")

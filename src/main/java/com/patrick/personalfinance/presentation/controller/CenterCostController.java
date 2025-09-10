@@ -6,21 +6,21 @@ import com.patrick.personalfinance.service.CenterCostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/center-costs")
 @Tag(name = "Center Cost Management", description = "Center cost management APIs")
 public class CenterCostController {
 
-    @Autowired
-    private CenterCostService centerCostService;
+    private final CenterCostService centerCostService;
 
     @GetMapping
     @Operation(summary = "Get all center costs for the authenticated user")
