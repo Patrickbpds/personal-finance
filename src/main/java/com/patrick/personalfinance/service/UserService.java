@@ -7,7 +7,7 @@ import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +18,12 @@ import java.util.UUID;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class UserService implements CrudService<UserRequestDto, UserResponseDto> {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -69,7 +68,7 @@ public class UserService implements CrudService<UserRequestDto, UserResponseDto>
             if (optionalUser.isPresent() && !optionalUser.get().getId().equals(id)) {
                 throw new ResourceBadRequestException(
                         "User with email " + dto.email() + " already exists.");
-            };
+            }
 
         UserMapper.updateEntityFromDto(dto, user);
 

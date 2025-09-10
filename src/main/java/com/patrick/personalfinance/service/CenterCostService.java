@@ -7,7 +7,7 @@ import com.patrick.personalfinance.domain.entity.CenterCost;
 import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.repository.CenterCostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +18,10 @@ import java.util.UUID;
 
 @Transactional
 @Service
+@AllArgsConstructor
 public class CenterCostService implements CrudService<CenterCostRequestDto, CenterCostResponseDto> {
 
-    @Autowired
-    private CenterCostRepository centerCostRepository;
+    private final CenterCostRepository centerCostRepository;
 
     @Override
     @Transactional(readOnly = true)
