@@ -1,7 +1,7 @@
 # PersonalFinance
 > REST API for personal financial management — built with Spring Boot 3, JPA, JWT security, and PostgreSQL
 
-[![Java](https://img.shields.io/badge/Java-24-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/24/)
+[![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Apache Maven](https://img.shields.io/badge/Maven-3.9-C71A36?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -26,7 +26,7 @@ Manage your personal finances through a secure REST API. Register users, track r
 
 | Layer       | Technology                                                              |
 |-------------|-------------------------------------------------------------------------|
-| Language    | Java 24                                                                 |
+| Language    | Java 21                                                                 |
 | Framework   | Spring Boot 3.5, Spring Security, Spring Data JPA                       |
 | Build       | Maven (via Maven Wrapper)                                               |
 | Database    | PostgreSQL 17                                                           |
@@ -40,8 +40,8 @@ Manage your personal finances through a secure REST API. Register users, track r
 
 ### Prerequisites
 
-- Java 24 (JDK)
-- Docker & Docker Compose (optional, for the database)
+- Java 21 (JDK)
+- Docker & Docker Compose (required for integration tests and optional for the database)
 
 ### 1. Clone & configure
 
@@ -71,6 +71,21 @@ The API will be available at `http://localhost:8080`. Swagger UI at `http://loca
 
 ```bash
 docker compose up -d --build
+```
+
+## Running the tests
+
+Integration tests use [Testcontainers](https://testcontainers.com/) and start a disposable PostgreSQL 17
+container, so a running Docker daemon is required (no local database needed).
+
+```bash
+./mvnw verify
+```
+
+If your user cannot reach the Docker socket directly, run the build through the `docker` group:
+
+```bash
+sg docker -c './mvnw verify'
 ```
 
 ## Usage
