@@ -1,59 +1,45 @@
 package com.patrick.personalfinance.presentation.controller;
 
-import com.patrick.personalfinance.application.dto.requests.UserRequestDto;
+import com.patrick.personalfinance.application.dto.requests.UpdateProfileRequest;
 import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.UUID;
-
-@AllArgsConstructor
-@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/users")
-@Tag(name = "User Management", description = "User management APIs")
+@RequestMapping("/api/users/me")
+@RequiredArgsConstructor
+@Tag(name = "User Self-Service", description = "Manage the authenticated user's own account")
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping
-    @Operation(summary = "Get all users")
-    public ResponseEntity<List<UserResponseDto>> getAll() {
-        return ResponseEntity.ok(userService.getAll());
+    @Operation(summary = "Get the authenticated user's profile")
+    public ResponseEntity<UserResponseDto> getCurrentUser() {
+        return ResponseEntity.ok(userService.getCurrentUser());
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get user by ID")
-    public ResponseEntity<UserResponseDto> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(userService.getById(id));
+    @PutMapping
+    @Operation(summary = "Update the authenticated user's profile")
+    public ResponseEntity<UserResponseDto> updateCurrentUser(
+            @Valid @RequestBody UpdateProfileRequest dto) {
+        return ResponseEntity.ok(userService.updateCurrentUser(dto));
     }
 
-    @PostMapping
-    @Operation(summary = "Create new user")
-    public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserRequestDto dto) {
-        UserResponseDto user = userService.create(dto);
-        return ResponseEntity.status(201).body(user);
-    }
-
-    @PutMapping("/{id}")
-    @Operation(summary = "Update user")
-    public ResponseEntity<UserResponseDto> update(@PathVariable UUID id ,@Valid @RequestBody UserRequestDto dto) {
-        UserResponseDto user = userService.update(id, dto);
-        return ResponseEntity.ok(user);
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete user (soft delete)")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        userService.delete(id);
+    @DeleteMapping
+    @Operation(summary = "Deactivate the authenticated user's account")
+    public ResponseEntity<Void> deactivateCurrentUser() {
+        userService.deactivateCurrentUser();
         return ResponseEntity.noContent().build();
     }
-
-
 }

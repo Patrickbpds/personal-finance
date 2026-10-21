@@ -5,7 +5,6 @@ import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.repository.UserRepository;
 import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 import com.patrick.personalfinance.security.dto.request.LoginRequest;
-import com.patrick.personalfinance.security.dto.request.UpdateUserRequest;
 import com.patrick.personalfinance.security.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,19 +58,5 @@ public class AuthService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         log.info("User {} successfully registered", createUserRequest.email());
-    }
-
-    public void update(UpdateUserRequest updateUserRequest) {
-        User user = userRepository.findByEmail(updateUserRequest.email())
-                .orElseThrow(() -> new DataIntegrityViolationException("User not found"));
-
-        UserMapper.updateEntityFromUpdateRequest(updateUserRequest, user);
-
-        if (updateUserRequest.password() != null && !updateUserRequest.password().trim().isEmpty()) {
-            user.setPassword(bCryptPasswordEncoder.encode(updateUserRequest.password()));
-        }
-
-        userRepository.save(user);
-        log.info("User {} successfully updated", updateUserRequest.email());
     }
 }

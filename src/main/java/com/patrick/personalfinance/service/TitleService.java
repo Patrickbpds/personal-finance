@@ -3,6 +3,7 @@ package com.patrick.personalfinance.service;
 import com.patrick.personalfinance.application.dto.requests.TitleRequestDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
 import com.patrick.personalfinance.application.mapper.TitleMapper;
+import com.patrick.personalfinance.application.port.CurrentUserProvider;
 import com.patrick.personalfinance.domain.entity.CenterCost;
 import com.patrick.personalfinance.domain.entity.Title;
 import com.patrick.personalfinance.domain.entity.User;
@@ -11,7 +12,6 @@ import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.repository.CenterCostRepository;
 import com.patrick.personalfinance.domain.repository.TitleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +27,7 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
 
     private final TitleRepository titleRepository;
     private final CenterCostRepository centerCostRepository;
+    private final CurrentUserProvider currentUserProvider;
 
     @Override
     @Transactional(readOnly = true)
@@ -118,7 +119,7 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
     }
 
     private User getAuthenticatedUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return currentUserProvider.getCurrentUser();
     }
 
     private List<CenterCost> associateCenterCosts(List<UUID> centerCostIds, User user) {

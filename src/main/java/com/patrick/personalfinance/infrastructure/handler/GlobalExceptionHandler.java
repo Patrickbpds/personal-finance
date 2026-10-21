@@ -1,6 +1,7 @@
 package com.patrick.personalfinance.infrastructure.handler;
 
 import com.patrick.personalfinance.infrastructure.dto.ErrorResponse;
+import com.patrick.personalfinance.domain.exceptions.InvalidCredentialsException;
 import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -65,6 +67,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerNoResourceFoundException(NoResourceFoundException ex) {
+
+        String dateTime = LocalDateTime.now().toString();
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                dateTime,
+                String.valueOf(HttpStatus.NOT_FOUND.value()),
+                "Not Found",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handlerRequestException(Exception ex) {
 
@@ -94,6 +110,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handlerBadCredentialsException(BadCredentialsException ex) {
+        String dateTime = LocalDateTime.now().toString();
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                dateTime,
+                String.valueOf(HttpStatus.UNAUTHORIZED.value()),
+                "Unauthorized",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handlerInvalidCredentialsException(InvalidCredentialsException ex) {
         String dateTime = LocalDateTime.now().toString();
 
         ErrorResponse errorResponse = new ErrorResponse(
