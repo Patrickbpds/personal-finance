@@ -4,8 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.patrick.personalfinance.security.config.JwtProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,10 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
-    @Value("${JWT_SECRET:default-secret-key-change-in-production}")
-    private String secret;
+    private final JwtProperties jwtProperties;
 
     public String generateToken(String email) {
         long jwtExpiration = 86400000;
@@ -26,7 +27,7 @@ public class JwtService {
                     .withIssuedAt(new Date())
                     .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
                     .withIssuer("personal-finance-app")
-                    .sign(Algorithm.HMAC256(secret));
+                    .sign(Algorithm.HMAC256(jwtProperties.secret()));
         } catch (Exception e) {
             log.error("Error generating JWT token for email: {}", email, e);
             throw new RuntimeException("Could not generate JWT token", e);
@@ -35,7 +36,7 @@ public class JwtService {
 
     public String extractEmail(String token) {
         try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secret))
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtProperties.secret()))
                     .withIssuer("personal-finance-app")
                     .build()
                     .verify(token);
@@ -58,7 +59,7 @@ public class JwtService {
 
     private boolean isTokenExpired(String token) {
         try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secret))
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtProperties.secret()))
                     .withIssuer("personal-finance-app")
                     .build()
                     .verify(token);
