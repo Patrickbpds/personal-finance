@@ -3,6 +3,8 @@ package com.patrick.personalfinance.domain.entity;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,5 +45,35 @@ class TitleTest {
         title.setValue(null);
 
         assertThat(title.getValue()).isNull();
+    }
+
+    @Test
+    void usesIdentityEqualityInsteadOfFieldEquality() {
+        UUID id = UUID.randomUUID();
+        Title title = titleWithId(id);
+        Title other = titleWithId(id);
+
+        assertThat(title).isEqualTo(title);
+        assertThat(title).isNotEqualTo(other);
+    }
+
+    @Test
+    void toStringIncludesOnlyIdentityFields() {
+        Title title = titleWithId(UUID.randomUUID());
+        title.setDescription("Salary");
+        title.setValue(new BigDecimal("1500.00"));
+        title.setCenterCosts(List.of());
+        title.setObservation("October");
+
+        assertThat(title.toString())
+                .contains("Salary")
+                .contains("1500.00")
+                .doesNotContain("October");
+    }
+
+    private Title titleWithId(UUID id) {
+        Title title = new Title();
+        title.setId(id);
+        return title;
     }
 }

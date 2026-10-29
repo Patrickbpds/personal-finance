@@ -2,10 +2,10 @@ package com.patrick.personalfinance.domain.entity;
 
 import com.patrick.personalfinance.domain.enums.TypeTitle;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@With
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "title", schema = "finance_tables")
@@ -23,9 +23,11 @@ public class Title {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idtitle")
+    @ToString.Include
     private UUID id;
 
     @Column(nullable = false)
+    @ToString.Include
     private String description;
 
     @ManyToOne
@@ -46,6 +48,7 @@ public class Title {
     private List<CenterCost> centerCosts;
 
     @Column(nullable = false, precision = 15, scale = 2)
+    @ToString.Include
     private BigDecimal value;
 
     @Column(name = "registrationdate")

@@ -1,10 +1,10 @@
 package com.patrick.personalfinance.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,9 +15,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-@With
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "user", schema = "finance_tables")
@@ -25,11 +25,14 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_user")
+    @ToString.Include
     private UUID id;
 
+    @ToString.Include
     private String name;
 
     @Column(nullable = false, unique = true)
+    @ToString.Include
     private String email;
 
     @Column(nullable = false)
@@ -55,7 +58,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<CenterCost> centerCosts;
 
-    //#region Framework Security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -90,9 +92,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return inactivationDate == null;
     }
-    //#endregion
 
-    // Methods helper
     public void inactivate() {
         this.inactivationDate = LocalDateTime.now();
     }
