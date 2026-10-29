@@ -113,7 +113,7 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
             throw new ResourceBadRequestException("Type, Expiration Date, Value and Description are required fields.");
         }
 
-        if (dto.value() <= 0) {
+        if (dto.value().signum() <= 0) {
             throw new ResourceBadRequestException("Value must be greater than zero.");
         }
     }

@@ -1,11 +1,13 @@
 package com.patrick.personalfinance.application.dto.requests;
 
 import com.patrick.personalfinance.domain.enums.TypeTitle;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +25,8 @@ public record TitleRequestDto(
 
         @NotNull(message = "Value cannot be null")
         @Positive(message = "Value must be positive")
-        Double value,
+        @Digits(integer = 13, fraction = 2, message = "Value must have at most 13 integer digits and 2 decimal places")
+        BigDecimal value,
 
         LocalDateTime registrationDate,
 

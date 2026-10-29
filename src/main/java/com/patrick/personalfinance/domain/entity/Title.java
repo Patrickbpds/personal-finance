@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -43,8 +45,8 @@ public class Title {
     )
     private List<CenterCost> centerCosts;
 
-    @Column(nullable = false)
-    private Double value;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal value;
 
     @Column(name = "registrationdate")
     private LocalDateTime registrationDate;
@@ -60,4 +62,8 @@ public class Title {
 
     @Column(columnDefinition = "TEXT")
     private String observation;
+
+    public void setValue(BigDecimal value) {
+        this.value = value == null ? null : value.setScale(2, RoundingMode.HALF_UP);
+    }
 }
