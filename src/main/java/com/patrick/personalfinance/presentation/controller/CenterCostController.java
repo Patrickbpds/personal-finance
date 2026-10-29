@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/center-costs")
 @Tag(name = "Center Cost Management", description = "Center cost management APIs")

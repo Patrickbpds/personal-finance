@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @Tag(name = "Dashboard", description = "Dashboard and financial overview APIs")
 public class DashboardController {
 

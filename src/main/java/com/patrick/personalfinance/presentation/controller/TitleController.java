@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/titles")
 @Tag(name = "Title Management", description = "Financial title management APIs")

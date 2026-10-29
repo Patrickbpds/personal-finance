@@ -33,5 +33,6 @@ public abstract class PostgresIntegrationTest {
     @DynamicPropertySource
     static void registerTestProperties(DynamicPropertyRegistry registry) {
         registry.add("JWT_SECRET", () -> "test-secret-key-with-at-least-32-characters");
+        registry.add("app.cors.allowed-origins", () -> "http://localhost:4200");
     }
 }

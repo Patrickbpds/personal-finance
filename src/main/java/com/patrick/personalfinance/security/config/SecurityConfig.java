@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,6 +49,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
@@ -72,9 +74,6 @@ public class SecurityConfig {
         return new CustomAuthenticationEntryPoint();
     }
 
-    /**
-     * Custom Authentication Entry Point for handling authentication failures
-     */
     public static class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
