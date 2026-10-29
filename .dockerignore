@@ -1,0 +1,10 @@
+target/
+.git/
+.github/
+docs/
+.env
+PLAN.md
+.classpath
+.factorypath
+.project
+.settings

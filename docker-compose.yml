@@ -5,9 +5,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER:?POSTGRES_USER must be set; see .env.exemplo}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set; see .env.exemplo}"
+      POSTGRES_DB: "${POSTGRES_DB:?POSTGRES_DB must be set; see .env.exemplo}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -22,14 +22,20 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_URL: "${DB_URL:?DB_URL must be set; see .env.exemplo}"
+      SPRING_DATASOURCE_USERNAME: "${POSTGRES_USER:?POSTGRES_USER must be set; see .env.exemplo}"
+      SPRING_DATASOURCE_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set; see .env.exemplo}"
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
       JWT_SECRET: "${JWT_SECRET:?JWT_SECRET must be set; see .env.exemplo}"
     depends_on:
       java_db:
           condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-fsS", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
 volumes:
   postgres_data: {}
