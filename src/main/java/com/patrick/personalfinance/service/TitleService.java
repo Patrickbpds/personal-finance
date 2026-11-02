@@ -52,14 +52,18 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
 
     @Override
     public TitleResponseDto create(TitleRequestDto dto) {
-        validateTitle(dto);
-
-        Title title = TitleMapper.toEntity(dto);
         User user = getAuthenticatedUser();
 
-        title.setUser(user);
-        title.setId(null);
-        title.setRegistrationDate(LocalDateTime.now());
+        Title title = Title.of(
+                user,
+                dto.description(),
+                dto.type(),
+                dto.value(),
+                dto.expirationDate(),
+                dto.referenceDate(),
+                dto.paymentDate(),
+                dto.observation()
+        );
 
         title.setCenterCosts(associateCenterCosts(dto.centerCostIds(), user));
 
@@ -69,8 +73,6 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
 
     @Override
     public TitleResponseDto update(UUID id, TitleRequestDto dto) {
-        validateTitle(dto);
-
         User user = getAuthenticatedUser();
         Title title = titleRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Title not found with id: " + id));
@@ -103,19 +105,6 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
         User user = getAuthenticatedUser();
         List<Title> titles = titleRepository.findByUserAndReferenceDateBetween(user, startDate, endDate);
         return TitleMapper.toResponseDtoList(titles);
-    }
-
-    private void validateTitle(TitleRequestDto dto) {
-        if (dto.type() == null ||
-                dto.expirationDate() == null ||
-                dto.value() == null ||
-                dto.description() == null) {
-            throw new ResourceBadRequestException("Type, Expiration Date, Value and Description are required fields.");
-        }
-
-        if (dto.value().signum() <= 0) {
-            throw new ResourceBadRequestException("Value must be greater than zero.");
-        }
     }
 
     private User getAuthenticatedUser() {

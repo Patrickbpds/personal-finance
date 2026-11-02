@@ -32,23 +32,6 @@ public final class TitleMapper {
         );
     }
 
-    public static Title toEntity(TitleRequestDto dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        Title title = new Title();
-        title.setDescription(dto.description());
-        title.setType(dto.type());
-        title.setValue(dto.value());
-        title.setRegistrationDate(dto.registrationDate());
-        title.setReferenceDate(dto.referenceDate());
-        title.setExpirationDate(dto.expirationDate());
-        title.setPaymentDate(dto.paymentDate());
-        title.setObservation(dto.observation());
-        return title;
-    }
-
     public static void updateEntityFromDto(TitleRequestDto dto, Title title) {
         if (dto == null || title == null) {
             return;
@@ -57,7 +40,6 @@ public final class TitleMapper {
         Optional.ofNullable(dto.description()).ifPresent(title::setDescription);
         Optional.ofNullable(dto.type()).ifPresent(title::setType);
         Optional.ofNullable(dto.value()).ifPresent(title::setValue);
-        Optional.ofNullable(dto.registrationDate()).ifPresent(title::setRegistrationDate);
         Optional.ofNullable(dto.referenceDate()).ifPresent(title::setReferenceDate);
         Optional.ofNullable(dto.expirationDate()).ifPresent(title::setExpirationDate);
         Optional.ofNullable(dto.paymentDate()).ifPresent(title::setPaymentDate);

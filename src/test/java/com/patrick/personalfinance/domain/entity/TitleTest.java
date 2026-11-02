@@ -1,8 +1,10 @@
 package com.patrick.personalfinance.domain.entity;
 
+import com.patrick.personalfinance.domain.enums.TitleType;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,6 +71,30 @@ class TitleTest {
                 .contains("Salary")
                 .contains("1500.00")
                 .doesNotContain("October");
+    }
+
+    @Test
+    void factorySetsTheOwnerAndTheRegistrationDate() {
+        User owner = new User();
+        LocalDateTime before = LocalDateTime.now();
+
+        Title title = Title.of(
+                owner,
+                "Salary",
+                TitleType.RECEIVABLE,
+                new BigDecimal("1500.00"),
+                LocalDateTime.now().plusDays(30),
+                LocalDateTime.now(),
+                null,
+                "October"
+        );
+
+        assertThat(title.getUser()).isSameAs(owner);
+        assertThat(title.getRegistrationDate()).isBetween(before, LocalDateTime.now());
+        assertThat(title.getDescription()).isEqualTo("Salary");
+        assertThat(title.getType()).isEqualTo(TitleType.RECEIVABLE);
+        assertThat(title.getValue()).isEqualTo(new BigDecimal("1500.00"));
+        assertThat(title.getObservation()).isEqualTo("October");
     }
 
     private Title titleWithId(UUID id) {

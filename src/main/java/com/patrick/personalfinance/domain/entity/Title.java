@@ -69,4 +69,27 @@ public class Title {
     public void setValue(BigDecimal value) {
         this.value = value == null ? null : value.setScale(2, RoundingMode.HALF_UP);
     }
+
+    public static Title of(
+            User user,
+            String description,
+            TitleType type,
+            BigDecimal value,
+            LocalDateTime expirationDate,
+            LocalDateTime referenceDate,
+            LocalDateTime paymentDate,
+            String observation
+    ) {
+        Title title = new Title();
+        title.setUser(user);
+        title.setRegistrationDate(LocalDateTime.now());
+        title.setDescription(description);
+        title.setType(type);
+        title.setValue(value);
+        title.setExpirationDate(expirationDate);
+        title.setReferenceDate(referenceDate);
+        title.setPaymentDate(paymentDate);
+        title.setObservation(observation);
+        return title;
+    }
 }

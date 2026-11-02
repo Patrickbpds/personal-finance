@@ -28,8 +28,6 @@ public record TitleRequestDto(
         @Digits(integer = 13, fraction = 2, message = "Value must have at most 13 integer digits and 2 decimal places")
         BigDecimal value,
 
-        LocalDateTime registrationDate,
-
         LocalDateTime referenceDate,
 
         @NotNull(message = "Expiration date cannot be null")
