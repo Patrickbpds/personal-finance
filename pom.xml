@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.patrick</groupId>
     <artifactId>PersonalFinance</artifactId>
@@ -97,14 +97,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- Auth0 Java JWT (for generating and verifying tokens via com.auth0.jwt.JWT) -->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>4.4.0</version>
         </dependency>
 
-        <!-- Swagger/OpenAPI for Documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -128,11 +126,6 @@
                 </configuration>
             </plugin>
 
-            <!--
-                Surefire runs fast unit tests on `mvn test`.
-                Failsafe runs the heavier *IT integration tests (Testcontainers
-                PostgreSQL) on `mvn verify`, after the app is packaged.
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

@@ -8,11 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Verifies that the application context starts against a real PostgreSQL
- * instance and that Flyway applied every migration, leaving the schema ready
- * for the remaining integration tests.
- */
 @SpringBootTest
 class PersonalFinanceApplicationTests extends PostgresIntegrationTest {
 
