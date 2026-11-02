@@ -1,34 +1,24 @@
 package com.patrick.personalfinance.infrastructure.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public final class ErrorResponse {
+import java.time.LocalDateTime;
 
-    @JsonProperty("timestamp")
-    private String dateTime;
+public record ErrorResponse(
+        LocalDateTime timestamp,
+        int status,
+        String error,
+        String message,
+        String path
+) {
 
-    @JsonProperty("status")
-    private String status;
-
-    @JsonProperty("error")
-    private String title;
-
-    @JsonProperty("message")
-    private String detail;
-
-    @JsonProperty("path")
-    private String path;
-
-    public ErrorResponse(String dateTime, String status, String title, String detail) {
-        this.dateTime = dateTime;
-        this.status = status;
-        this.title = title;
-        this.detail = detail;
+    public static ErrorResponse of(HttpStatus status, String message, String path) {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                message,
+                path
+        );
     }
 }

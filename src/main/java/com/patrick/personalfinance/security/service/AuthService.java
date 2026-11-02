@@ -2,13 +2,13 @@ package com.patrick.personalfinance.security.service;
 
 import com.patrick.personalfinance.application.mapper.UserMapper;
 import com.patrick.personalfinance.domain.entity.User;
+import com.patrick.personalfinance.domain.exceptions.EmailAlreadyExistsException;
 import com.patrick.personalfinance.domain.repository.UserRepository;
 import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 import com.patrick.personalfinance.security.dto.request.LoginRequest;
 import com.patrick.personalfinance.security.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,10 +26,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    /**
-     * Authenticates the user and returns the JWT token.
-     * @throws BadCredentialsException if invalid credentials
-     */
     public TokenResponse login(LoginRequest loginRequest) {
         try {
             authenticationManager.authenticate(
@@ -40,9 +36,8 @@ public class AuthService {
             );
 
             String token = jwtService.generateToken(loginRequest.email());
-            log.info("Successful login to {}", loginRequest.email());
+            log.info("Successful login for {}", loginRequest.email());
             return new TokenResponse(token);
-
         } catch (AuthenticationException ex) {
             log.warn("Login failure for {}: {}", loginRequest.email(), ex.getMessage());
             throw new BadCredentialsException("Invalid credentials");
@@ -51,7 +46,7 @@ public class AuthService {
 
     public void register(CreateUserRequest createUserRequest) {
         if (userRepository.findByEmail(createUserRequest.email()).isPresent()) {
-            throw new DataIntegrityViolationException("Email already registered");
+            throw new EmailAlreadyExistsException("Email already registered");
         }
 
         User user = UserMapper.fromCreateRequest(createUserRequest);
