@@ -5,6 +5,7 @@ import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 import com.patrick.personalfinance.security.dto.request.LoginRequest;
 import com.patrick.personalfinance.security.dto.response.TokenResponse;
 import com.patrick.personalfinance.security.service.AuthService;
+import com.patrick.personalfinance.service.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserAccountService userAccountService;
 
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Authenticate user and return JWT token")
@@ -33,7 +35,7 @@ public class AuthController {
     @PostMapping("/register")
     @Operation(summary = "User registration", description = "Register a new user")
     public ResponseEntity<String> register(@Valid @RequestBody CreateUserRequest createUserRequest) {
-        authService.register(createUserRequest);
+        userAccountService.register(createUserRequest);
         return ResponseEntity.status(201).body("User registered successfully");
     }
 }
