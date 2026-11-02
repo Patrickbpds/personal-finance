@@ -30,13 +30,12 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class TitleService implements CrudService<TitleRequestDto, TitleResponseDto> {
+public class TitleService {
 
     private final TitleRepository titleRepository;
     private final CenterCostRepository centerCostRepository;
     private final CurrentUserProvider currentUserProvider;
 
-    @Override
     @Transactional(readOnly = true)
     public Page<TitleResponseDto> getAll(Pageable pageable) {
         User user = getAuthenticatedUser();
@@ -45,7 +44,6 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
                 .map(title -> TitleMapper.toResponseDto(title, now));
     }
 
-    @Override
     @Transactional(readOnly = true)
     public TitleResponseDto getById(UUID id) {
         User user = getAuthenticatedUser();
@@ -58,7 +56,6 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
         return TitleMapper.toResponseDto(optTitle.get());
     }
 
-    @Override
     public TitleResponseDto create(TitleRequestDto dto) {
         User user = getAuthenticatedUser();
 
@@ -79,7 +76,6 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
         return TitleMapper.toResponseDto(title);
     }
 
-    @Override
     public TitleResponseDto update(UUID id, TitleRequestDto dto) {
         User user = getAuthenticatedUser();
         Title title = titleRepository.findByIdAndUser(id, user)
@@ -95,7 +91,6 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
         return TitleMapper.toResponseDto(title);
     }
 
-    @Override
     public void delete(UUID id) {
         getById(id);
         titleRepository.deleteById(id);

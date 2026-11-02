@@ -22,12 +22,11 @@ import java.util.UUID;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class CenterCostService implements CrudService<CenterCostRequestDto, CenterCostResponseDto> {
+public class CenterCostService {
 
     private final CenterCostRepository centerCostRepository;
     private final CurrentUserProvider currentUserProvider;
 
-    @Override
     @Transactional(readOnly = true)
     public Page<CenterCostResponseDto> getAll(Pageable pageable) {
         User user = currentUserProvider.getCurrentUser();
@@ -46,7 +45,6 @@ public class CenterCostService implements CrudService<CenterCostRequestDto, Cent
         return pageable;
     }
 
-    @Override
     @Transactional(readOnly = true)
     public CenterCostResponseDto getById(UUID id) {
         User user = currentUserProvider.getCurrentUser();
@@ -59,7 +57,6 @@ public class CenterCostService implements CrudService<CenterCostRequestDto, Cent
         return CenterCostMapper.toResponseDto(optCenterCost.get());
     }
 
-    @Override
     public CenterCostResponseDto create(CenterCostRequestDto dto) {
         CenterCost centerCost = CenterCostMapper.toEntity(dto);
         User user = currentUserProvider.getCurrentUser();
@@ -71,7 +68,6 @@ public class CenterCostService implements CrudService<CenterCostRequestDto, Cent
         return CenterCostMapper.toResponseDto(centerCost);
     }
 
-    @Override
     public CenterCostResponseDto update(UUID id, CenterCostRequestDto dto) {
         User user = currentUserProvider.getCurrentUser();
         CenterCost centerCost = centerCostRepository.findByIdAndUser(id, user)
@@ -83,7 +79,6 @@ public class CenterCostService implements CrudService<CenterCostRequestDto, Cent
         return CenterCostMapper.toResponseDto(centerCost);
     }
 
-    @Override
     public void delete(UUID id) {
         getById(id);
         centerCostRepository.deleteById(id);
