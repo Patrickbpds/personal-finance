@@ -4,10 +4,12 @@ import com.patrick.personalfinance.domain.exceptions.EmailAlreadyExistsException
 import com.patrick.personalfinance.domain.exceptions.InvalidCredentialsException;
 import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
+import com.patrick.personalfinance.domain.exceptions.TooManyRequestsException;
 import com.patrick.personalfinance.infrastructure.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -90,6 +92,14 @@ public class GlobalExceptionHandler {
             DataIntegrityViolationException ex, HttpServletRequest request) {
         log.warn("Data integrity violation on {}", request.getRequestURI(), ex);
         return build(HttpStatus.CONFLICT, "Request conflicts with existing data", request);
+    }
+
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<ErrorResponse> handleTooManyRequests(
+            TooManyRequestsException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getRetryAfterSeconds()))
+                .body(ErrorResponse.of(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage(), request.getRequestURI()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)

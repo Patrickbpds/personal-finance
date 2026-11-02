@@ -7,6 +7,7 @@ import com.patrick.personalfinance.security.dto.response.TokenResponse;
 import com.patrick.personalfinance.security.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,10 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Authenticate user and return JWT token")
-    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        TokenResponse response = authService.login(loginRequest);
+    public ResponseEntity<TokenResponse> login(
+            @Valid @RequestBody LoginRequest loginRequest,
+            HttpServletRequest request) {
+        TokenResponse response = authService.login(loginRequest, request.getRemoteAddr());
         return ResponseEntity.ok(response);
     }
 

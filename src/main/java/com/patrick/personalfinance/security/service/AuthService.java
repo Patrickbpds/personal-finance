@@ -7,6 +7,7 @@ import com.patrick.personalfinance.domain.repository.UserRepository;
 import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 import com.patrick.personalfinance.security.dto.request.LoginRequest;
 import com.patrick.personalfinance.security.dto.response.TokenResponse;
+import com.patrick.personalfinance.security.ratelimit.LoginAttemptRateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +26,11 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final LoginAttemptRateLimiter loginAttemptRateLimiter;
 
-    public TokenResponse login(LoginRequest loginRequest) {
+    public TokenResponse login(LoginRequest loginRequest, String clientIp) {
+        loginAttemptRateLimiter.checkAllowed(clientIp, loginRequest.email());
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -36,6 +40,7 @@ public class AuthService {
             );
 
             IssuedToken token = jwtService.generateToken(loginRequest.email());
+            loginAttemptRateLimiter.reset(clientIp, loginRequest.email());
             log.info("Successful login for {}", loginRequest.email());
             return new TokenResponse(token.value(), token.expiresInSeconds());
         } catch (AuthenticationException ex) {
