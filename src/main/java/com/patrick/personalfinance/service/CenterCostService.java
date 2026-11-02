@@ -9,10 +9,13 @@ import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.repository.CenterCostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,10 +29,21 @@ public class CenterCostService implements CrudService<CenterCostRequestDto, Cent
 
     @Override
     @Transactional(readOnly = true)
-    public List<CenterCostResponseDto> getAll() {
+    public Page<CenterCostResponseDto> getAll(Pageable pageable) {
         User user = currentUserProvider.getCurrentUser();
-        List<CenterCost> list = centerCostRepository.findByUser(user);
-        return CenterCostMapper.toResponseDtoList(list);
+        return centerCostRepository.findByUser(user, withDefaultSort(pageable))
+                .map(CenterCostMapper::toResponseDto);
+    }
+
+    private Pageable withDefaultSort(Pageable pageable) {
+        if (pageable.getSort().isUnsorted()) {
+            return PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.ASC, "description")
+            );
+        }
+        return pageable;
     }
 
     @Override

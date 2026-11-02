@@ -3,6 +3,8 @@ package com.patrick.personalfinance.domain.repository;
 import com.patrick.personalfinance.domain.entity.Title;
 import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.enums.TitleType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +19,7 @@ import java.util.UUID;
 @Repository
 public interface TitleRepository extends JpaRepository<Title, UUID> {
 
-    List<Title> findByUser(User user);
+    Page<Title> findByUser(User user, Pageable pageable);
 
     Optional<Title> findByIdAndUser(UUID id, User user);
 

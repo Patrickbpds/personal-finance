@@ -146,7 +146,7 @@ class UserAccountSecurityIT extends ApiIntegrationTest {
 
         mockMvc.perform(get("/api/titles").header("Authorization", bearer(tokenB)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(jsonPath("$.content.length()").value(0));
 
         mockMvc.perform(get("/api/titles/" + titleId).header("Authorization", bearer(tokenB)))
                 .andExpect(status().isNotFound());
@@ -158,7 +158,8 @@ class UserAccountSecurityIT extends ApiIntegrationTest {
                         .header("Authorization", bearer(tokenA)))
                 .andExpect(status().isOk())
                 .andReturn();
-        JsonNode aliceTitles = objectMapper.readTree(aliceList.getResponse().getContentAsString());
+        JsonNode aliceTitles = objectMapper.readTree(aliceList.getResponse().getContentAsString())
+                .get("content");
         assertThat(aliceTitles).hasSize(1);
         assertThat(aliceTitles.get(0).get("description").asText()).isEqualTo("Alice private title");
     }
@@ -184,7 +185,7 @@ class UserAccountSecurityIT extends ApiIntegrationTest {
 
         mockMvc.perform(get("/api/center-costs").header("Authorization", bearer(tokenB)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(jsonPath("$.content.length()").value(0));
 
         mockMvc.perform(get("/api/center-costs/" + centerCostId)
                         .header("Authorization", bearer(tokenB)))
@@ -198,7 +199,8 @@ class UserAccountSecurityIT extends ApiIntegrationTest {
                         .header("Authorization", bearer(tokenA)))
                 .andExpect(status().isOk())
                 .andReturn();
-        JsonNode carolCenterCosts = objectMapper.readTree(carolList.getResponse().getContentAsString());
+        JsonNode carolCenterCosts = objectMapper.readTree(carolList.getResponse().getContentAsString())
+                .get("content");
         assertThat(carolCenterCosts).hasSize(1);
         assertThat(carolCenterCosts.get(0).get("description").asText())
                 .isEqualTo("Carol private center cost");

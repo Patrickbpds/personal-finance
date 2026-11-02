@@ -7,10 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -23,8 +24,8 @@ public class CenterCostController {
 
     @GetMapping
     @Operation(summary = "Get all center costs for the authenticated user")
-    public ResponseEntity<List<CenterCostResponseDto>> getAll() {
-        return ResponseEntity.ok(centerCostService.getAll());
+    public ResponseEntity<Page<CenterCostResponseDto>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(centerCostService.getAll(pageable));
     }
 
     @GetMapping("/{id}")

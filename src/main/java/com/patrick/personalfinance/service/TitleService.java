@@ -12,6 +12,10 @@ import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.repository.CenterCostRepository;
 import com.patrick.personalfinance.domain.repository.TitleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,10 +38,11 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
 
     @Override
     @Transactional(readOnly = true)
-    public List<TitleResponseDto> getAll() {
+    public Page<TitleResponseDto> getAll(Pageable pageable) {
         User user = getAuthenticatedUser();
-        List<Title> titles = titleRepository.findByUser(user);
-        return TitleMapper.toResponseDtoList(titles);
+        LocalDateTime now = LocalDateTime.now();
+        return titleRepository.findByUser(user, withDefaultSort(pageable))
+                .map(title -> TitleMapper.toResponseDto(title, now));
     }
 
     @Override
@@ -108,6 +113,17 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
         User user = getAuthenticatedUser();
         List<Title> titles = titleRepository.findByUserAndReferenceDateBetween(user, startDate, endDate);
         return TitleMapper.toResponseDtoList(titles);
+    }
+
+    private Pageable withDefaultSort(Pageable pageable) {
+        if (pageable.getSort().isUnsorted()) {
+            return PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.ASC, "expirationDate")
+            );
+        }
+        return pageable;
     }
 
     private User getAuthenticatedUser() {

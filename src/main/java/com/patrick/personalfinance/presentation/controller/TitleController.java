@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ public class TitleController {
 
     @GetMapping
     @Operation(summary = "Get all titles for the authenticated user")
-    public ResponseEntity<List<TitleResponseDto>> getAll() {
-        return ResponseEntity.ok(titleService.getAll());
+    public ResponseEntity<Page<TitleResponseDto>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(titleService.getAll(pageable));
     }
 
     @GetMapping("/{id}")
