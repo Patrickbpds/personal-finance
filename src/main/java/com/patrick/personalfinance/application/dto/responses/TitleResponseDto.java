@@ -1,5 +1,6 @@
 package com.patrick.personalfinance.application.dto.responses;
 
+import com.patrick.personalfinance.domain.enums.PaymentStatus;
 import com.patrick.personalfinance.domain.enums.TitleType;
 
 import java.math.BigDecimal;
@@ -14,6 +15,8 @@ public record TitleResponseDto(
         String description,
 
         TitleType type,
+
+        PaymentStatus paymentStatus,
 
         List<CenterCostResponseDto> centerCosts,
 

@@ -3,6 +3,7 @@ package com.patrick.personalfinance.application.dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.patrick.personalfinance.application.dto.responses.DashboardResponseDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
+import com.patrick.personalfinance.domain.enums.PaymentStatus;
 import com.patrick.personalfinance.domain.enums.TitleType;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,7 @@ class MoneySerializationTest {
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 "Salary",
                 TitleType.RECEIVABLE,
+                PaymentStatus.PENDING,
                 List.of(),
                 new BigDecimal("100.50"),
                 null,
@@ -42,6 +44,9 @@ class MoneySerializationTest {
                 new BigDecimal("0.00"),
                 new BigDecimal("1234.50"),
                 new BigDecimal("1234.50"),
+                new BigDecimal("0.00"),
+                new BigDecimal("0.00"),
+                new BigDecimal("1234.50"),
                 List.of(),
                 List.of()
         );
@@ -51,5 +56,6 @@ class MoneySerializationTest {
         assertThat(json).contains("\"totalPayable\":0.00");
         assertThat(json).contains("\"totalReceivable\":1234.50");
         assertThat(json).contains("\"balance\":1234.50");
+        assertThat(json).contains("\"totalPending\":1234.50");
     }
 }

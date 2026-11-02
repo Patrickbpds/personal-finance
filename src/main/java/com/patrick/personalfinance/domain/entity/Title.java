@@ -1,5 +1,6 @@
 package com.patrick.personalfinance.domain.entity;
 
+import com.patrick.personalfinance.domain.enums.PaymentStatus;
 import com.patrick.personalfinance.domain.enums.TitleType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -68,6 +69,16 @@ public class Title {
 
     public void setValue(BigDecimal value) {
         this.value = value == null ? null : value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public PaymentStatus paymentStatus(LocalDateTime reference) {
+        if (paymentDate != null) {
+            return PaymentStatus.PAID;
+        }
+        if (expirationDate != null && expirationDate.isBefore(reference)) {
+            return PaymentStatus.OVERDUE;
+        }
+        return PaymentStatus.PENDING;
     }
 
     public static Title of(

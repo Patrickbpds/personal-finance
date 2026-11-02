@@ -4,6 +4,7 @@ import com.patrick.personalfinance.application.dto.requests.TitleRequestDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
 import com.patrick.personalfinance.domain.entity.Title;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,6 +13,10 @@ public final class TitleMapper {
     private TitleMapper() {}
 
     public static TitleResponseDto toResponseDto(Title title) {
+        return toResponseDto(title, LocalDateTime.now());
+    }
+
+    public static TitleResponseDto toResponseDto(Title title, LocalDateTime reference) {
         if (title == null) {
             return null;
         }
@@ -20,6 +25,7 @@ public final class TitleMapper {
                 title.getId(),
                 title.getDescription(),
                 title.getType(),
+                title.paymentStatus(reference),
                 title.getCenterCosts() != null ?
                         CenterCostMapper.toResponseDtoList(title.getCenterCosts()) :
                         List.of(),
@@ -47,13 +53,17 @@ public final class TitleMapper {
     }
 
     public static List<TitleResponseDto> toResponseDtoList(List<Title> titles) {
+        return toResponseDtoList(titles, LocalDateTime.now());
+    }
+
+    public static List<TitleResponseDto> toResponseDtoList(List<Title> titles, LocalDateTime reference) {
         if (titles == null) {
             return List.of();
         }
 
         return titles.stream()
                 .filter(Objects::nonNull)
-                .map(TitleMapper::toResponseDto)
+                .map(title -> toResponseDto(title, reference))
                 .toList();
     }
 }

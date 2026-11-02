@@ -1,5 +1,6 @@
 package com.patrick.personalfinance.domain.entity;
 
+import com.patrick.personalfinance.domain.enums.PaymentStatus;
 import com.patrick.personalfinance.domain.enums.TitleType;
 import org.junit.jupiter.api.Test;
 
@@ -95,6 +96,40 @@ class TitleTest {
         assertThat(title.getType()).isEqualTo(TitleType.RECEIVABLE);
         assertThat(title.getValue()).isEqualTo(new BigDecimal("1500.00"));
         assertThat(title.getObservation()).isEqualTo("October");
+    }
+
+    @Test
+    void reportsPaidWhenPaymentDateIsSet() {
+        Title title = new Title();
+        title.setExpirationDate(LocalDateTime.now().minusDays(30));
+        title.setPaymentDate(LocalDateTime.now().minusDays(31));
+
+        assertThat(title.paymentStatus(LocalDateTime.now())).isEqualTo(PaymentStatus.PAID);
+    }
+
+    @Test
+    void reportsOverdueWhenUnpaidAndPastExpiration() {
+        Title title = new Title();
+        title.setExpirationDate(LocalDateTime.now().minusSeconds(1));
+
+        assertThat(title.paymentStatus(LocalDateTime.now())).isEqualTo(PaymentStatus.OVERDUE);
+    }
+
+    @Test
+    void reportsPendingWhenUnpaidAndNotExpired() {
+        Title title = new Title();
+        title.setExpirationDate(LocalDateTime.now().plusDays(1));
+
+        assertThat(title.paymentStatus(LocalDateTime.now())).isEqualTo(PaymentStatus.PENDING);
+    }
+
+    @Test
+    void reportsPendingWhenExpirationEqualsTheReferenceInstant() {
+        LocalDateTime reference = LocalDateTime.now();
+        Title title = new Title();
+        title.setExpirationDate(reference);
+
+        assertThat(title.paymentStatus(reference)).isEqualTo(PaymentStatus.PENDING);
     }
 
     private Title titleWithId(UUID id) {
