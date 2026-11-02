@@ -35,9 +35,9 @@ public class AuthService {
                     )
             );
 
-            String token = jwtService.generateToken(loginRequest.email());
+            IssuedToken token = jwtService.generateToken(loginRequest.email());
             log.info("Successful login for {}", loginRequest.email());
-            return new TokenResponse(token);
+            return new TokenResponse(token.value(), token.expiresInSeconds());
         } catch (AuthenticationException ex) {
             log.warn("Login failure for {}: {}", loginRequest.email(), ex.getMessage());
             throw new BadCredentialsException("Invalid credentials");

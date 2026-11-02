@@ -1,20 +1,14 @@
 package com.patrick.personalfinance.security.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
 
-@Getter
-public class TokenResponse {
-    @JsonProperty("access_token")
-    private final String token;
+public record TokenResponse(
+        @JsonProperty("access_token") String accessToken,
+        @JsonProperty("token_type") String tokenType,
+        @JsonProperty("expires_in") long expiresIn
+) {
 
-    @JsonProperty("token_type")
-    private final String tokenType = "Bearer";
-
-    @JsonProperty("expires_in")
-    private final long expiresIn = 86400;
-
-    public TokenResponse(String token) {
-        this.token = token;
+    public TokenResponse(String accessToken, long expiresIn) {
+        this(accessToken, "Bearer", expiresIn);
     }
 }

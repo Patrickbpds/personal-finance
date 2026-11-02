@@ -2,71 +2,45 @@ package com.patrick.personalfinance.security.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.patrick.personalfinance.security.config.JwtProperties;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Date;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
 
     private final JwtProperties jwtProperties;
 
-    public String generateToken(String email) {
-        long jwtExpiration = 86400000;
-        try {
-            return JWT.create()
-                    .withSubject(email)
-                    .withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
-                    .withIssuer("personal-finance-app")
-                    .sign(Algorithm.HMAC256(jwtProperties.secret()));
-        } catch (Exception e) {
-            log.error("Error generating JWT token for email: {}", email, e);
-            throw new RuntimeException("Could not generate JWT token", e);
-        }
+    public IssuedToken generateToken(String email) {
+        Instant issuedAt = Instant.now();
+        Instant expiresAt = issuedAt.plus(jwtProperties.expiration());
+        String token = JWT.create()
+                .withSubject(email)
+                .withIssuedAt(Date.from(issuedAt))
+                .withExpiresAt(Date.from(expiresAt))
+                .withIssuer(jwtProperties.issuer())
+                .sign(algorithm());
+        return new IssuedToken(token, jwtProperties.expiration().toSeconds());
     }
 
-    public String extractEmail(String token) {
-        try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtProperties.secret()))
-                    .withIssuer("personal-finance-app")
-                    .build()
-                    .verify(token);
-            return decodedJWT.getSubject();
-        } catch (JWTVerificationException e) {
-            log.error("Error extracting email from JWT token", e);
-            throw new JWTVerificationException("Invalid JWT token", e);
-        }
+    public DecodedJWT verify(String token) {
+        return JWT.require(algorithm())
+                .withIssuer(jwtProperties.issuer())
+                .build()
+                .verify(token);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        try {
-            final String username = extractEmail(token);
-            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-        } catch (Exception e) {
-            log.warn("JWT token validation failed: {}", e.getMessage());
-            return false;
-        }
+    public boolean isTokenValid(DecodedJWT decodedJWT, UserDetails userDetails) {
+        return userDetails.getUsername().equals(decodedJWT.getSubject());
     }
 
-    private boolean isTokenExpired(String token) {
-        try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtProperties.secret()))
-                    .withIssuer("personal-finance-app")
-                    .build()
-                    .verify(token);
-            return decodedJWT.getExpiresAt().before(new Date());
-        } catch (JWTVerificationException e) {
-            log.warn("Error checking token expiration: {}", e.getMessage());
-            return true;
-        }
+    private Algorithm algorithm() {
+        return Algorithm.HMAC256(jwtProperties.secret());
     }
 }
