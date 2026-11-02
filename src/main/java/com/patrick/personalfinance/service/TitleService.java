@@ -16,9 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -116,15 +119,27 @@ public class TitleService implements CrudService<TitleRequestDto, TitleResponseD
             return List.of();
         }
 
-        List<CenterCost> centerCosts = centerCostRepository.findAllById(centerCostIds)
-                .stream()
+        Set<UUID> requestedIds = new LinkedHashSet<>(centerCostIds);
+        List<CenterCost> found = centerCostRepository.findAllById(requestedIds);
+
+        Set<UUID> foundIds = found.stream()
+                .map(CenterCost::getId)
+                .collect(Collectors.toSet());
+
+        Set<UUID> missingIds = new LinkedHashSet<>(requestedIds);
+        missingIds.removeAll(foundIds);
+        if (!missingIds.isEmpty()) {
+            throw new ResourceNotFoundException("Center costs not found: " + missingIds);
+        }
+
+        List<CenterCost> owned = found.stream()
                 .filter(centerCost -> centerCost.getUser().getId().equals(user.getId()))
                 .toList();
 
-        if (centerCosts.size() != centerCostIds.size()) {
-            throw new ResourceBadRequestException("Some center costs not found or don't belong to the user");
+        if (owned.size() != requestedIds.size()) {
+            throw new ResourceBadRequestException("Center costs do not belong to the authenticated user");
         }
 
-        return centerCosts;
+        return owned;
     }
 }
