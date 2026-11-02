@@ -2,6 +2,7 @@ package com.patrick.personalfinance.security.service;
 
 import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.exceptions.UnauthenticatedException;
+import com.patrick.personalfinance.security.principal.AuthenticatedUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,8 +50,9 @@ class SecurityContextCurrentUserProviderTest {
     }
 
     private void authenticate(User user) {
+        AuthenticatedUser principal = new AuthenticatedUser(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user, null, user.getAuthorities());
+                principal, null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

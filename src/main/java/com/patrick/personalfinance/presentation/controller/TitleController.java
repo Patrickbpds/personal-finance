@@ -2,7 +2,7 @@ package com.patrick.personalfinance.presentation.controller;
 
 import com.patrick.personalfinance.application.dto.requests.TitleRequestDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
-import com.patrick.personalfinance.service.TitleService;
+import com.patrick.personalfinance.application.service.TitleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

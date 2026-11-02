@@ -1,11 +1,10 @@
-package com.patrick.personalfinance.security.controller;
+package com.patrick.personalfinance.presentation.controller;
 
-
-import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
+import com.patrick.personalfinance.application.dto.requests.CreateUserRequest;
+import com.patrick.personalfinance.application.service.UserAccountService;
 import com.patrick.personalfinance.security.dto.request.LoginRequest;
 import com.patrick.personalfinance.security.dto.response.TokenResponse;
 import com.patrick.personalfinance.security.service.AuthService;
-import com.patrick.personalfinance.service.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

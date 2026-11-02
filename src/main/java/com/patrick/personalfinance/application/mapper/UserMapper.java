@@ -1,8 +1,8 @@
 package com.patrick.personalfinance.application.mapper;
 
+import com.patrick.personalfinance.application.dto.requests.CreateUserRequest;
 import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
 import com.patrick.personalfinance.domain.entity.User;
-import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
 
 public final class UserMapper {
 

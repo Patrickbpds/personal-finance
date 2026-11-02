@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.service;
+package com.patrick.personalfinance.application.service;
 
 import com.patrick.personalfinance.application.dto.requests.UpdateProfileRequest;
 import com.patrick.personalfinance.application.dto.responses.UserResponseDto;
@@ -7,7 +7,7 @@ import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.exceptions.EmailAlreadyExistsException;
 import com.patrick.personalfinance.domain.exceptions.InvalidCredentialsException;
 import com.patrick.personalfinance.domain.repository.UserRepository;
-import com.patrick.personalfinance.security.dto.request.CreateUserRequest;
+import com.patrick.personalfinance.application.dto.requests.CreateUserRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

@@ -39,7 +39,6 @@ class UserTest {
         user.inactivate();
 
         assertThat(user.isActive()).isFalse();
-        assertThat(user.isEnabled()).isFalse();
         assertThat(user.getInactivationDate()).isBeforeOrEqualTo(LocalDateTime.now());
     }
 
@@ -48,7 +47,6 @@ class UserTest {
         User user = userWithId(UUID.randomUUID());
 
         assertThat(user.isActive()).isTrue();
-        assertThat(user.isEnabled()).isTrue();
     }
 
     private User userWithId(UUID id) {

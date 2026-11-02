@@ -3,6 +3,7 @@ package com.patrick.personalfinance.security.service;
 import com.patrick.personalfinance.application.port.CurrentUserProvider;
 import com.patrick.personalfinance.domain.entity.User;
 import com.patrick.personalfinance.domain.exceptions.UnauthenticatedException;
+import com.patrick.personalfinance.security.principal.AuthenticatedUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,11 @@ public class SecurityContextCurrentUserProvider implements CurrentUserProvider {
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !(authentication.getPrincipal() instanceof User user)) {
+        if (authentication == null
+                || !(authentication.getPrincipal() instanceof AuthenticatedUser authenticatedUser)) {
             throw new UnauthenticatedException("No authenticated user in the current context");
         }
 
-        return user;
+        return authenticatedUser.getUser();
     }
 }

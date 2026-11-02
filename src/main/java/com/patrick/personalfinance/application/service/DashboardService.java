@@ -1,4 +1,4 @@
-package com.patrick.personalfinance.service;
+package com.patrick.personalfinance.application.service;
 
 import com.patrick.personalfinance.application.dto.responses.DashboardResponseDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;

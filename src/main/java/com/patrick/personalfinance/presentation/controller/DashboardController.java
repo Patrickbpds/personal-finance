@@ -1,7 +1,7 @@
 package com.patrick.personalfinance.presentation.controller;
 
 import com.patrick.personalfinance.application.dto.responses.DashboardResponseDto;
-import com.patrick.personalfinance.service.DashboardService;
+import com.patrick.personalfinance.application.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

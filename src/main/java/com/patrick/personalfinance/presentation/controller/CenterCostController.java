@@ -2,7 +2,7 @@ package com.patrick.personalfinance.presentation.controller;
 
 import com.patrick.personalfinance.application.dto.requests.CenterCostRequestDto;
 import com.patrick.personalfinance.application.dto.responses.CenterCostResponseDto;
-import com.patrick.personalfinance.service.CenterCostService;
+import com.patrick.personalfinance.application.service.CenterCostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
