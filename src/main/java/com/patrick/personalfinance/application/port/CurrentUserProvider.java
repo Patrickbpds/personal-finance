@@ -4,6 +4,5 @@ import com.patrick.personalfinance.domain.entity.User;
 
 public interface CurrentUserProvider {
 
-    
     User getCurrentUser();
 }

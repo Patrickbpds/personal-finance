@@ -5,6 +5,7 @@ import com.patrick.personalfinance.domain.exceptions.InvalidCredentialsException
 import com.patrick.personalfinance.domain.exceptions.ResourceBadRequestException;
 import com.patrick.personalfinance.domain.exceptions.ResourceNotFoundException;
 import com.patrick.personalfinance.domain.exceptions.TooManyRequestsException;
+import com.patrick.personalfinance.domain.exceptions.UnauthenticatedException;
 import com.patrick.personalfinance.infrastructure.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -111,6 +112,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleInvalidCredentials(
             InvalidCredentialsException ex, HttpServletRequest request) {
+        return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(UnauthenticatedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthenticated(
+            UnauthenticatedException ex, HttpServletRequest request) {
         return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
     }
 
