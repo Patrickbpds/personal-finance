@@ -1,6 +1,6 @@
 package com.patrick.personalfinance.application.dto.responses;
 
-import com.patrick.personalfinance.domain.enums.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TitleType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public record TitleResponseDto(
 
         String description,
 
-        TypeTitle type,
+        TitleType type,
 
         List<CenterCostResponseDto> centerCosts,
 

@@ -8,7 +8,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public abstract class PostgresIntegrationTest {
 
     @ServiceConnection
-    static final PostgreSQLContainer<?> POSTGRES =
+    protected static final PostgreSQLContainer<?> POSTGRES =
             new PostgreSQLContainer<>("postgres:17");
 
     static {

@@ -1,6 +1,6 @@
 package com.patrick.personalfinance.domain.entity;
 
-import com.patrick.personalfinance.domain.enums.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TitleType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +34,9 @@ public class Title {
     @JoinColumn(name = "iduser")
     private User user;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private TypeTitle type;
+    private TitleType type;
 
     @ManyToMany
     @JoinTable(

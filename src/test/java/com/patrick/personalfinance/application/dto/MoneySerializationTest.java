@@ -3,7 +3,7 @@ package com.patrick.personalfinance.application.dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.patrick.personalfinance.application.dto.responses.DashboardResponseDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
-import com.patrick.personalfinance.domain.enums.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TitleType;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ class MoneySerializationTest {
         TitleResponseDto dto = new TitleResponseDto(
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 "Salary",
-                TypeTitle.RECEIVABLE,
+                TitleType.RECEIVABLE,
                 List.of(),
                 new BigDecimal("100.50"),
                 null,

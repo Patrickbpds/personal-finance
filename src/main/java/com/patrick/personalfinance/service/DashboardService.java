@@ -2,7 +2,7 @@ package com.patrick.personalfinance.service;
 
 import com.patrick.personalfinance.application.dto.responses.DashboardResponseDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
-import com.patrick.personalfinance.domain.enums.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TitleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +30,10 @@ public class DashboardService {
         List<TitleResponseDto> receivableTitles = new ArrayList<>();
 
         for (TitleResponseDto title : titles) {
-            if (title.type() == TypeTitle.PAYABLE) {
+            if (title.type() == TitleType.PAYABLE) {
                 totalPayable = totalPayable.add(title.value());
                 payableTitles.add(title);
-            } else if (title.type() == TypeTitle.RECEIVABLE) {
+            } else if (title.type() == TitleType.RECEIVABLE) {
                 totalReceivable = totalReceivable.add(title.value());
                 receivableTitles.add(title);
             }

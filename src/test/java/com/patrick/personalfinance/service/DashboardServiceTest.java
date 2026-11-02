@@ -2,7 +2,7 @@ package com.patrick.personalfinance.service;
 
 import com.patrick.personalfinance.application.dto.responses.DashboardResponseDto;
 import com.patrick.personalfinance.application.dto.responses.TitleResponseDto;
-import com.patrick.personalfinance.domain.enums.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TitleType;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -25,9 +25,9 @@ class DashboardServiceTest {
     @Test
     void sumsValuesWithoutFloatingPointError() {
         when(titleService.getByExpirationDateRange(startDate, endDate)).thenReturn(List.of(
-                title(TypeTitle.RECEIVABLE, "0.10"),
-                title(TypeTitle.RECEIVABLE, "0.20"),
-                title(TypeTitle.PAYABLE, "0.10")
+                title(TitleType.RECEIVABLE, "0.10"),
+                title(TitleType.RECEIVABLE, "0.20"),
+                title(TitleType.PAYABLE, "0.10")
         ));
 
         DashboardResponseDto result = dashboardService.getCashFlow(startDate, endDate);
@@ -50,8 +50,8 @@ class DashboardServiceTest {
 
     @Test
     void splitsTitlesByType() {
-        TitleResponseDto receivable = title(TypeTitle.RECEIVABLE, "150.00");
-        TitleResponseDto payable = title(TypeTitle.PAYABLE, "40.00");
+        TitleResponseDto receivable = title(TitleType.RECEIVABLE, "150.00");
+        TitleResponseDto payable = title(TitleType.PAYABLE, "40.00");
 
         when(titleService.getByExpirationDateRange(startDate, endDate)).thenReturn(List.of(receivable, payable));
 
@@ -62,7 +62,7 @@ class DashboardServiceTest {
         assertThat(result.balance()).isEqualTo(new BigDecimal("110.00"));
     }
 
-    private TitleResponseDto title(TypeTitle type, String value) {
+    private TitleResponseDto title(TitleType type, String value) {
         return new TitleResponseDto(
                 UUID.randomUUID(),
                 "Title",

@@ -1,6 +1,6 @@
 package com.patrick.personalfinance.application.dto.requests;
 
-import com.patrick.personalfinance.domain.enums.TypeTitle;
+import com.patrick.personalfinance.domain.enums.TitleType;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ public record TitleRequestDto(
         String description,
 
         @NotNull(message = "Type cannot be null")
-        TypeTitle type,
+        TitleType type,
 
         List<UUID> centerCostIds,
 
